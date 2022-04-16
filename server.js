@@ -1,8 +1,14 @@
 require("dotenv").config();
 const express = require("express");
+var cors = require('cors')
 const app = express();
 
-//Usar Expresss Cors Middleware aquí al hacer deploy
+//Expresss Cors Middleware
+var corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200 // 
+}
+app.use(cors(corsOptions))
 
 //Habilitar req.body:
 app.use(express.json());

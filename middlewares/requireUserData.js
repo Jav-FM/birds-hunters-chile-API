@@ -1,8 +1,7 @@
 const requireUserData = (req, res, next) => {
   try {
     const {       
-      userTypeId,
-      names,
+        names,
       firstLastName,
       secondLastName,
       rut,
@@ -14,7 +13,6 @@ const requireUserData = (req, res, next) => {
     // Validando que no hayan campos en blanco
     // La negación (!) de trim() devuelve true si el string se compone sólo de espacios
     if (
-      !userTypeId?.trim() ||
       !names?.trim() ||
       !firstLastName?.trim() ||
       !secondLastName?.trim() ||
