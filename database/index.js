@@ -169,11 +169,18 @@ const deleteUserDB = async (id) => {
   }
 };
 
-const createPhotoDB = async (pathPhoto, user_id, bird_id, place, date, order) => {
+const createPhotoDB = async ({
+  pathPhoto,
+  user_id,
+  bird_id,
+  place,
+  date,
+  order,
+}) => {
   const client = await pool.connect();
 
   const query = {
-    text: "INSERT INTO photos (photo, user_id, bird_id, place, date, order) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+    text: 'INSERT INTO photos (photo, user_id, bird_id, place, "date", "order") VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
     values: [pathPhoto, user_id, bird_id, place, date, order],
   };
   try {
@@ -193,26 +200,92 @@ const createPhotoDB = async (pathPhoto, user_id, bird_id, place, date, order) =>
   }
 };
 
-const deletePhotoDB = async (id) => {
-    const client = await pool.connect();
-    const query = {
-      text: "DELETE FROM photos WHERE id = $1",
-      values: [Number(id)],
-    };
-    try {
-      await client.query(query);
-      return {
-        ok: true,
-      };
-    } catch (error) {
-      return {
-        ok: false,
-        error,
-      };
-    } finally {
-      client.release();
-    }
+const getPhotosByUserDB = async (id) => {
+  const client = await pool.connect();
+  const query = {
+    text: "SELECT * FROM photos WHERE user_id = $1",
+    values: [Number(id)],
   };
+  try {
+    const response = await client.query(query);
+
+    return {
+      ok: true,
+      data: response.rows[0],
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      error,
+    };
+  } finally {
+    client.release();
+  }
+};
+
+const replacePhotoDB = async ({
+  photoid,
+  pathPhoto,
+  user_id,
+  bird_id,
+  place,
+  date,
+  order,
+}) => {
+
+  const client = await pool.connect();
+
+  const insertPhotoQuery = {
+    text: 'INSERT INTO photos (photo, user_id, bird_id, place, "date", "order") VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+    values: [pathPhoto, user_id, bird_id, place, date, order],
+  };
+
+  const deletePhotoQuery = {
+    text: "DELETE FROM photos WHERE id = $1",
+    values: [Number(photoid)],
+  };
+
+  try {
+
+      await client.query("BEGIN");
+      await client.query(insertPhotoQuery);
+      await client.query(deletePhotoQuery);
+      await client.query("COMMIT");
+ 
+    return {
+      ok: true,
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      error,
+    };
+  } finally {
+    client.release();
+  }
+
+};
+
+const deletePhotoDB = async (id) => {
+  const client = await pool.connect();
+  const query = {
+    text: "DELETE FROM photos WHERE id = $1",
+    values: [Number(id)],
+  };
+  try {
+    await client.query(query);
+    return {
+      ok: true,
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      error,
+    };
+  } finally {
+    client.release();
+  }
+};
 
 module.exports = {
   createUserDB,
@@ -221,5 +294,7 @@ module.exports = {
   editUserDB,
   deleteUserDB,
   createPhotoDB,
-  deletePhotoDB
+  getPhotosByUserDB,
+  replacePhotoDB,
+  deletePhotoDB,
 };

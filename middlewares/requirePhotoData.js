@@ -5,6 +5,7 @@ const requirePhotoData = (req, res, next) => {
     const { user_id, bird_id, place, date, order } = req.body;
     // Validando que no hayan campos en blanco
     // La negación (!) de trim() devuelve true si el string se compone sólo de espacios
+  
     if (
       !user_id?.trim() ||
       !bird_id?.trim() ||

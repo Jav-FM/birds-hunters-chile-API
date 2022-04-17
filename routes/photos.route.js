@@ -2,7 +2,8 @@ const express = require("express");
 const expressFileUpload = require('express-fileupload');
 const {
   createPhoto,
-  editPhoto,
+  getPhotosByUser,
+  replacePhoto,
   deletePhoto,
 } = require("../controllers/photos.controllers");
 const { requireAuth } = require("../middlewares/requireAuth");
@@ -20,8 +21,9 @@ router.use(
   })
 );
 
-router.post("/photos", requirePhotoData, createPhoto);
-router.put("/photos/:id", requireAuth, editPhoto);
+router.post("/photos", requireAuth, requirePhotoData, createPhoto);
+router.get('/photos/:userid', requireAuth, getPhotosByUser);
+router.put("/photos/:photoid", requireAuth, requirePhotoData, replacePhoto);
 router.delete("/photos/:id", requireAuth, deletePhoto);
 
 module.exports = router;

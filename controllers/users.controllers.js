@@ -102,17 +102,7 @@ const loginUser = async (req, res) => {
 const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
-    if (!req.headers?.authorization) {
-      throw new Error("No autorizado");
-    }
-
-    const token = req.headers.authorization.split(" ")[1];
-
-    if (!token) {
-      throw new Error("Formato de token no valido (utilizar Bearer)");
-    }
-
-    const response = await getUserByIdDB(id);
+       const response = await getUserByIdDB(id);
     if (!response.ok) {
       return res.status(500).json({ error: response.error });
     }
