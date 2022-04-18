@@ -3,7 +3,7 @@ const path = require("path");
 
 const createPhoto = async (req, res) => {
   try {
-    const { user_id, bird_id, place, date, order } = req.body;
+    const { user_id, bird_id, place, date, order, name } = req.body;
     const { photo } = req.files;
     const pathPhoto = req.pathPhoto;
 
@@ -20,6 +20,7 @@ const createPhoto = async (req, res) => {
       place,
       date,
       order,
+      name,
     });
 
     if (!response.ok) {
@@ -40,7 +41,6 @@ const createPhoto = async (req, res) => {
 const getPhotosByUser = async (req,res) => {
   try {
     const { userid } = req.params;
-
     const response = await getPhotosByUserDB(userid);
     if (!response.ok) {
       return res.status(500).json({ error: response.error });
@@ -58,7 +58,7 @@ const getPhotosByUser = async (req,res) => {
 const replacePhoto = async (req, res) => {
   try {
     const { photoid } = req.params;
-    const { user_id, bird_id, place, date, order } = req.body;
+    const { user_id, bird_id, place, date, order, name } = req.body;
     const { photo } = req.files;
     const pathPhoto = req.pathPhoto;
 
@@ -76,6 +76,7 @@ const replacePhoto = async (req, res) => {
       place,
       date,
       order,
+      name,
     });
 
     if (!response.ok) {

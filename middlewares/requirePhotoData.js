@@ -2,7 +2,7 @@ const { nanoid } = require("nanoid");
 
 const requirePhotoData = (req, res, next) => {
   try {
-    const { user_id, bird_id, place, date, order } = req.body;
+    const { user_id, bird_id, place, date, order, name } = req.body;
     // Validando que no hayan campos en blanco
     // La negación (!) de trim() devuelve true si el string se compone sólo de espacios
   
@@ -12,6 +12,7 @@ const requirePhotoData = (req, res, next) => {
       !place?.trim() ||
       !date?.trim() ||
       !order?.trim() ||
+      !name?.trim() ||
       !req.files?.photo
     ) {
       throw new Error("Uno o más campos obligatorios viene en blanco.");

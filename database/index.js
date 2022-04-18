@@ -176,12 +176,13 @@ const createPhotoDB = async ({
   place,
   date,
   order,
+  name,
 }) => {
   const client = await pool.connect();
 
   const query = {
-    text: 'INSERT INTO photos (photo, user_id, bird_id, place, "date", "order") VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-    values: [pathPhoto, user_id, bird_id, place, date, order],
+    text: 'INSERT INTO photos (photo, user_id, bird_id, place, "date", "order", name) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+    values: [pathPhoto, user_id, bird_id, place, date, order, name],
   };
   try {
     const response = await client.query(query);
@@ -211,7 +212,7 @@ const getPhotosByUserDB = async (id) => {
 
     return {
       ok: true,
-      data: response.rows[0],
+      data: response.rows,
     };
   } catch (error) {
     return {
@@ -231,13 +232,14 @@ const replacePhotoDB = async ({
   place,
   date,
   order,
+  name
 }) => {
 
   const client = await pool.connect();
 
   const insertPhotoQuery = {
-    text: 'INSERT INTO photos (photo, user_id, bird_id, place, "date", "order") VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-    values: [pathPhoto, user_id, bird_id, place, date, order],
+    text: 'INSERT INTO photos (photo, user_id, bird_id, place, "date", "order", name) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+    values: [pathPhoto, user_id, bird_id, place, date, order, name],
   };
 
   const deletePhotoQuery = {
