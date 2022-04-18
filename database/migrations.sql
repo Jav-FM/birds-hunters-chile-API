@@ -34,6 +34,7 @@ CREATE TABLE photos
     bird_id VARCHAR (100) NOT NULL,
     place VARCHAR(250) NOT NULL,
     "date" DATE NOT NULL,
+    name VARCHAR(250) NOT NULL,
     "order" VARCHAR(250) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
