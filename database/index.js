@@ -150,12 +150,19 @@ const editUserDB = async ({
 
 const deleteUserDB = async (id) => {
   const client = await pool.connect();
-  const query = {
+  const deletePhotosQuery = {
+    text: 'DELETE FROM photos WHERE user_id = $1',
+    values: [Number(id)],
+  };
+  const deleteUserQuery = {
     text: "DELETE FROM users WHERE id = $1",
     values: [Number(id)],
   };
   try {
-    await client.query(query);
+      await client.query("BEGIN");
+      await client.query(deletePhotosQuery);
+      await client.query(deleteUserQuery);
+      await client.query("COMMIT");
     return {
       ok: true,
     };
@@ -234,26 +241,20 @@ const replacePhotoDB = async ({
   order,
   name
 }) => {
-
   const client = await pool.connect();
-
   const insertPhotoQuery = {
     text: 'INSERT INTO photos (photo, user_id, bird_id, place, "date", "order", name) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
     values: [pathPhoto, user_id, bird_id, place, date, order, name],
   };
-
   const deletePhotoQuery = {
     text: "DELETE FROM photos WHERE id = $1",
     values: [Number(photoid)],
   };
-
   try {
-
       await client.query("BEGIN");
       await client.query(insertPhotoQuery);
       await client.query(deletePhotoQuery);
       await client.query("COMMIT");
- 
     return {
       ok: true,
     };
@@ -265,7 +266,6 @@ const replacePhotoDB = async ({
   } finally {
     client.release();
   }
-
 };
 
 const deletePhotoDB = async (id) => {
