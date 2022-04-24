@@ -5,7 +5,7 @@ const app = express();
 
 //Expresss Cors Middleware
 var corsOptions = {
-  origin: 'https://birdshunters-chile.firebaseapp.com',
+  origin: ['https://birdshunters-chile.firebaseapp.com','http://localhost:5000'],
   optionsSuccessStatus: 200 // 
 }
 app.use(cors(corsOptions))
