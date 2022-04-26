@@ -8,7 +8,8 @@ var corsOptions = {
   origin: ['https://birdshunters-chile.firebaseapp.com','https://birdshunters-chile.web.app', 'http://localhost:3000'],
   optionsSuccessStatus: 200 // 
 }
-app.use(cors(corsOptions))
+// app.use(cors(corsOptions))
+app.use(cors())
 
 //Habilitar req.body:
 app.use(express.json());
