@@ -21,7 +21,7 @@ const app = express();
 
 //Habilitar cors
 // app.use(cors(corsOptions));
-app.use(cors());
+app.use(cors({ origin: true }));
 
 //Habilitar req.body:
 app.use(express.json());
@@ -30,8 +30,8 @@ app.use(express.urlencoded({ extended: true }));
 //Directorios estáticos:
 app.use(express.static(__dirname + "/public"));
 
-app.use("/api/v1/", cors(), require("./routes/users.route"));
-app.use("/api/v1/", cors(), require("./routes/photos.route"));
+app.use("/api/v1/", require("./routes/users.route"));
+app.use("/api/v1/", require("./routes/photos.route"));
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
