@@ -1,4 +1,9 @@
-const { createPhotoDB, getPhotosByUserDB, replacePhotoDB, deletePhotoDB } = require("../database");
+const {
+  createPhotoDB,
+  getPhotosByUserDB,
+  replacePhotoDB,
+  deletePhotoDB,
+} = require("../database");
 const path = require("path");
 
 const createPhoto = async (req, res) => {
@@ -8,9 +13,12 @@ const createPhoto = async (req, res) => {
     const pathPhoto = req.pathPhoto;
 
     //Se guarda la foto en el servidor (usamos path.join para juntar rutas)
-    photo.mv(path.join(__dirname, "../public/birdsphotos/", pathPhoto), (err) => {
-      if (err) throw new Error("No se puede guardar la imagen.");
-    });
+    photo.mv(
+      path.join(__dirname, "../public/birdsphotos/", pathPhoto),
+      (err) => {
+        if (err) throw new Error("No se puede guardar la imagen.");
+      }
+    );
 
     //Se guarda el nombre de la foto y el resto de info en la DB
     const response = await createPhotoDB({
@@ -31,14 +39,21 @@ const createPhoto = async (req, res) => {
       ok: true,
     });
   } catch (error) {
-    return res.status(400).json({
-      ok: false,
-      error: error.message,
-    });
+    if (error.message) {
+      return res.status(400).json({
+        ok: false,
+        error: error.message,
+      });
+    } else {
+      return res.status(400).json({
+        ok: false,
+        error: error,
+      });
+    }
   }
 };
 
-const getPhotosByUser = async (req,res) => {
+const getPhotosByUser = async (req, res) => {
   try {
     const { userid } = req.params;
     const response = await getPhotosByUserDB(userid);
@@ -63,9 +78,12 @@ const replacePhoto = async (req, res) => {
     const pathPhoto = req.pathPhoto;
 
     //Se guarda la foto en el servidor (usamos path.join para juntar rutas)
-    photo.mv(path.join(__dirname, "../public/birdsphotos/", pathPhoto), (err) => {
-      if (err) throw new Error("No se puede guardar la imagen.");
-    });
+    photo.mv(
+      path.join(__dirname, "../public/birdsphotos/", pathPhoto),
+      (err) => {
+        if (err) throw new Error("No se puede guardar la imagen.");
+      }
+    );
 
     //Se guarda el nombre de la foto y el resto de info en la DB
     const response = await replacePhotoDB({
@@ -87,10 +105,17 @@ const replacePhoto = async (req, res) => {
       ok: true,
     });
   } catch (error) {
-    return res.status(400).json({
-      ok: false,
-      error: error.message,
-    });
+    if (error.message) {
+      return res.status(400).json({
+        ok: false,
+        error: error.message,
+      });
+    } else {
+      return res.status(400).json({
+        ok: false,
+        error: error,
+      });
+    }
   }
 };
 
