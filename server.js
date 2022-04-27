@@ -9,12 +9,18 @@ const allowList = [
   "https://birdshunters-chile.web.app",
   "http://localhost:3000",
 ];
-const corsOptionsDelegate = (req, callback) => {
-  const allowed = allowList.includes(req.header("Origin"));
+const corsOptionsDelegate = function (req, callback) {
+  const allowed = allowList.includes(origin);
   if (allowed) callback(null, true);
   else callback(new Error("No permitido por Cors."));
 };
-app.use(cors(corsOptionsDelegate));
+
+var corsOptions = {
+  origin: corsOptionsDelegate,
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 
 // app.use(cors());
 
