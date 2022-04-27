@@ -70,7 +70,7 @@ const getPhotosByUser = async (req, res) => {
 };
 
 //El siguiente método debe modoficar una foto en la DB, borrar la foto anterior en el servidor y agregar la nueva foto
-const replacePhoto = async (req, res) => {
+const replacePhoto = async (req, res, next) => {
   try {
     const { photoid } = req.params;
     const { user_id, bird_id, place, date, order, name } = req.body;
