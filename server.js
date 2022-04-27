@@ -21,7 +21,11 @@ const app = express();
 
 //Habilitar cors
 // app.use(cors(corsOptions));
-app.use(cors({ origin: true }));
+var corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200,
+}
+app.use(cors(corsOptions));
 
 //Habilitar req.body:
 app.use(express.json());
