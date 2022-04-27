@@ -4,18 +4,19 @@ var cors = require("cors");
 const app = express();
 
 //Expresss Cors Middleware (intento para restringir a 3 rutas el acceso)
-// const allowList = [
-//   "https://birdshunters-chile.firebaseapp.com",
-//   "https://birdshunters-chile.web.app",
-//   "http://localhost:3000",
-// ];
-// const corsOptionsDelegate = (req, callback) => {
-//   const corsOptions = { origin: allowList.includes(req.header("Origin")) };
-//   callback(null, corsOptions);
-// };
-// app.use(cors(corsOptionsDelegate))
-
+const allowList = [
+  "https://birdshunters-chile.firebaseapp.com",
+  "https://birdshunters-chile.web.app",
+  "http://localhost:3000",
+];
+const corsOptionsDelegate = (req, callback) => {
+  const allowed = allowList.includes(req.header("Origin"));
+  if (allowed) callback(null, true);
+  else callback(new Error("No permitido por Cors."));
+};
 app.use(cors(corsOptionsDelegate));
+
+// app.use(cors());
 
 //Habilitar req.body:
 app.use(express.json());
