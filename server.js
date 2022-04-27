@@ -1,15 +1,21 @@
 require("dotenv").config();
 const express = require("express");
-var cors = require('cors')
+var cors = require("cors");
 const app = express();
 
 //Expresss Cors Middleware
-var corsOptions = {
-  origin: ['https://birdshunters-chile.firebaseapp.com','https://birdshunters-chile.web.app', 'http://localhost:3000'],
-  optionsSuccessStatus: 200 // 
-}
+const allowList = [
+  "https://birdshunters-chile.firebaseapp.com",
+  "https://birdshunters-chile.web.app",
+  "http://localhost:3000",
+];
+const corsOptionsDelegate = (req, callback) => {
+  const corsOptions = { origin: allowList.includes(req.header("Origin")) };
+  callback(null, corsOptions);
+};
+
 // app.use(cors(corsOptions))
-app.use(cors())
+app.use(cors(corsOptionsDelegate));
 
 //Habilitar req.body:
 app.use(express.json());
@@ -18,8 +24,8 @@ app.use(express.urlencoded({ extended: true }));
 //Directorios estáticos:
 app.use(express.static(__dirname + "/public"));
 
-app.use('/api/v1/', require('./routes/users.route'));
-app.use('/api/v1/', require('./routes/photos.route'));
+app.use("/api/v1/", require("./routes/users.route"));
+app.use("/api/v1/", require("./routes/photos.route"));
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
