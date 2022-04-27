@@ -18,7 +18,6 @@ const app = express();
 //   origin: corsOptionsDelegate,
 //   optionsSuccessStatus: 200,
 // };
-
 // app.use(cors(corsOptions));
 
 app.use(cors());
