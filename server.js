@@ -1,26 +1,26 @@
 require("dotenv").config();
 const express = require("express");
-var cors = require("cors");
+const cors = require("cors");
 const app = express();
 
 //Expresss Cors Middleware (intento para restringir a 3 rutas el acceso)
-// const allowList = [
-//   "https://birdshunters-chile.firebaseapp.com",
-//   "https://birdshunters-chile.web.app",
-//   "http://localhost:3000",
-// ];
-// const corsOptionsDelegate = function (origin, callback) {
-//   const allowed = allowList.includes(origin);
-//   if (allowed) callback(null, true);
-//   else callback(new Error("No permitido por Cors."));
-// };
-// const corsOptions = {
-//   origin: corsOptionsDelegate,
-//   optionsSuccessStatus: 200,
-// };
-// app.use(cors(corsOptions));
+const whitelist = [
+  "https://birdshunters-chile.firebaseapp.com",
+  "https://birdshunters-chile.web.app",
+  "http://localhost:3000",
+];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
 
-app.use(cors());
+//Habilitar cors
+app.use(cors(corsOptions));
 
 //Habilitar req.body:
 app.use(express.json());
