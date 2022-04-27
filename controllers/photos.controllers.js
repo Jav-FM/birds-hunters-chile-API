@@ -6,7 +6,7 @@ const {
 } = require("../database");
 const path = require("path");
 
-const createPhoto = async (req, res) => {
+const createPhoto = async (req, res, next) => {
   try {
     const { user_id, bird_id, place, date, order, name } = req.body;
     const { photo } = req.files;
@@ -16,7 +16,7 @@ const createPhoto = async (req, res) => {
     photo.mv(
       path.join(__dirname, "../public/birdsphotos/", pathPhoto),
       (err) => {
-        if (err) throw new Error("No se puede guardar la imagen.");
+        if (err) return next("No se puede guardar la imagen.");
       }
     );
 
@@ -81,7 +81,7 @@ const replacePhoto = async (req, res) => {
     photo.mv(
       path.join(__dirname, "../public/birdsphotos/", pathPhoto),
       (err) => {
-        if (err) throw new Error("No se puede guardar la imagen.");
+        if (err) return next("No se puede guardar la imagen.");
       }
     );
 
