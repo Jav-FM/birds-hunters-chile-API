@@ -3,18 +3,18 @@ const express = require("express");
 var cors = require("cors");
 const app = express();
 
-//Expresss Cors Middleware
-const allowList = [
-  "https://birdshunters-chile.firebaseapp.com",
-  "https://birdshunters-chile.web.app",
-  "http://localhost:3000",
-];
-const corsOptionsDelegate = (req, callback) => {
-  const corsOptions = { origin: allowList.includes(req.header("Origin")) };
-  callback(null, corsOptions);
-};
+//Expresss Cors Middleware (intento para restringir a 3 rutas el acceso)
+// const allowList = [
+//   "https://birdshunters-chile.firebaseapp.com",
+//   "https://birdshunters-chile.web.app",
+//   "http://localhost:3000",
+// ];
+// const corsOptionsDelegate = (req, callback) => {
+//   const corsOptions = { origin: allowList.includes(req.header("Origin")) };
+//   callback(null, corsOptions);
+// };
+// app.use(cors(corsOptionsDelegate))
 
-// app.use(cors(corsOptions))
 app.use(cors(corsOptionsDelegate));
 
 //Habilitar req.body:
