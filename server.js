@@ -3,32 +3,32 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 
-//Expresss Cors Middleware (intento para restringir a 3 rutas el acceso)
-// const whitelist = [
-//   "https://birdshunters-chile.firebaseapp.com",
-//   "https://birdshunters-chile.web.app",
-//   "http://localhost:3000",
-// ];
-// const corsOptions = {
-//   origin: function (origin, callback) {
-//     if (whitelist.indexOf(origin) !== -1) {
-//       callback(null, true)
-//     } else {
-//       callback(new Error('Not allowed by CORS'))
-//     }
-//   }
-// }
+// Expresss Cors Middleware (intento para restringir a 3 rutas el acceso)
+const whitelist = [
+  "https://birdshunters-chile.firebaseapp.com",
+  "https://birdshunters-chile.web.app",
+  "http://localhost:3000",
+];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
 
 //Habilitar cors
-// app.use(cors(corsOptions));
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", '*');
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-  res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
-  next();
-});
-app.use(cors());
+app.use(cors(corsOptions));
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", '*');
+//   res.header("Access-Control-Allow-Credentials", true);
+//   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+//   res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
+//   next();
+// });
+// app.use(cors());
 
 //Habilitar req.body:
 app.use(express.json());
