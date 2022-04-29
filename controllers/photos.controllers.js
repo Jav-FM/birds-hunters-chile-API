@@ -8,21 +8,11 @@ const path = require("path");
 
 const createPhoto = async (req, res, next) => {
   try {
-    const { user_id, bird_id, place, date, order, name } = req.body;
-    const { photo } = req.files;
-    const pathPhoto = req.pathPhoto;
+    const { user_id, bird_id, place, date, order, name, photo } = req.body;
 
-    //Se guarda la foto en el servidor (usamos path.join para juntar rutas)
-    photo.mv(
-      path.join(__dirname, "../public/birdsphotos/", pathPhoto),
-      (err) => {
-        if (err) return next("No se puede guardar la imagen.");
-      }
-    );
-
-    //Se guarda el nombre de la foto y el resto de info en la DB
+    //Se guarda la ruta de la foto y el resto de info en la DB
     const response = await createPhotoDB({
-      pathPhoto,
+      photo,
       user_id,
       bird_id,
       place,
@@ -73,22 +63,12 @@ const getPhotosByUser = async (req, res) => {
 const replacePhoto = async (req, res, next) => {
   try {
     const { photoid } = req.params;
-    const { user_id, bird_id, place, date, order, name } = req.body;
-    const { photo } = req.files;
-    const pathPhoto = req.pathPhoto;
-
-    //Se guarda la foto en el servidor (usamos path.join para juntar rutas)
-    photo.mv(
-      path.join(__dirname, "../public/birdsphotos/", pathPhoto),
-      (err) => {
-        if (err) return next("No se puede guardar la imagen.");
-      }
-    );
+    const { user_id, bird_id, place, date, order, name, photo } = req.body;
 
     //Se guarda el nombre de la foto y el resto de info en la DB
     const response = await replacePhotoDB({
       photoid,
-      pathPhoto,
+      photo,
       user_id,
       bird_id,
       place,

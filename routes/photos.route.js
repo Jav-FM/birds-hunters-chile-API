@@ -21,9 +21,9 @@ router.use(
   })
 );
 
-router.post("/photos", requireAuth, requirePhotoData, createPhoto);
+router.post("/photos", requireAuth, createPhoto);
 router.get('/photos/:userid', requireAuth, getPhotosByUser);
-router.put("/photos/:photoid", requireAuth, requirePhotoData, replacePhoto);
+router.put("/photos/:photoid", requireAuth, replacePhoto);
 router.delete("/photos/:id", requireAuth, deletePhoto);
 
 module.exports = router;
