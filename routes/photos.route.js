@@ -7,7 +7,6 @@ const {
   deletePhoto,
 } = require("../controllers/photos.controllers");
 const { requireAuth } = require("../middlewares/requireAuth");
-const { requirePhotoData } = require("../middlewares/requirePhotoData");
 
 const router = express.Router();
 
